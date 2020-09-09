@@ -1,0 +1,75 @@
+*{
+    margin: 0;
+}
+
+/* .row {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+} */
+
+.col-11{
+    background-color: #EFEFEF;
+    width: 100%;
+    margin-left: auto!;
+    padding: 0;
+}
+
+#main{
+    padding: 2vh;
+}
+
+.table-container{
+    padding: 2vh;
+    background-color: white;
+    border-radius: 2vh;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+    font-size: 12px;
+}
+
+.table-head {
+    border-bottom: 3px solid #B4B4B4;;
+    font-size: 12px;
+}
+
+.table-footer {
+    text-align: center;
+}
+
+
+.table-hover tbody tr:hover td {
+    background: #1a4875;
+    color: white;
+}
+
+/* Button Toolbar */
+.btn-toolbar .btn {
+    border-color: #051928;
+    color: white;
+    background-color: #1a4875;
+}
+
+#save-button {
+    border-color: #051928;
+    color: white;
+    background-color: #1a4875;
+}
+
+/* Footer */
+.footer {
+    margin-left: 9.1%;
+    background-color: #1A4875;
+    height: 50px;
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+    color: white;
+    padding-left: 25px;
+    padding-top: 17px;
+    font-size: small;
+}
+

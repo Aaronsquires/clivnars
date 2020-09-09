@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+<!-- Dashboard CSS -->
+<link rel="stylesheet" href="{% static 'css/maincontent.css' %}">
+<link rel="stylesheet" href="{% static 'css/tables.css' %}">
+
+<link rel="stylesheet" href="{% static 'css/datatables.min.css' %}">
+
+{% endblock %}
+
+{% block title %}Clivnars Ltd - Colours{% endblock %}
+
+{% block main %}
+
+<!-- Dashboard / Button Toolbar -->
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-3 pb-2" id="dashboard-bar">
+    <h4 class="h4">Colours</h4>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a class="btn" href="{% url 'colours_createview' %}">
+            <i class="fas fa-plus-circle mr-2"></i>
+            Add Colour
+        </a>
+        <a class="btn btn-md mr-2 ml-2" id="btn-print" href="{% url 'export_products' %}">
+            <i class="fa fa-file-csv mr-2" aria-hidden="true"></i>
+            Export CSV
+        </a>
+    </div>
+</div>
+
+
+    <div class="table-container mb-2">
+        <table class="datatable table table-hover" cellspacing="0" width="100%">
+            <thead class="table-head">
+                <tr>
+                    <th class="th" style="width:15%">Colour</th>
+                    <th class="th" style="width:15%">Colour Code</th>
+                    <th class="th">Description</th>
+                    <th class="th" style="width:5%">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="table-body">
+                {% for object in object_list%}
+                <tr {% if object.is_out_of_stock %}style="background-color: #FF6161"{% endif %}>
+
+                    <td>{{ object.colour }}</td>
+                    <td>{{ object.colourcode }}</td>
+                    <td>{{ object.description }}</td>
+                    <td>
+                        <a class="btn action-btn"href="{% url 'colours_editview' object.id %}">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/datatables.min.js' %}"></script>
+<script src="{% static 'js/table.js' %}"></script>
+{% endblock %}

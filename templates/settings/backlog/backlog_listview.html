@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load producttags %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+<!-- Dashboard CSS -->
+<link rel="stylesheet" href="{% static 'css/maincontent.css' %}">
+<link rel="stylesheet" href="{% static 'css/tables.css' %}">
+
+<link rel="stylesheet" href="{% static 'css/datatables.min.css' %}">
+
+{% endblock %}
+
+{% block title %}Clivnars Ltd{% endblock %}
+
+{% block main %}
+
+<!-- Dashboard / Button Toolbar -->
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-3 pb-2" id="dashboard-bar">
+    <h4 class="h4">Product Backlog</h4>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <!-- <a class="btn" href="{% url 'stocklist_create' %}">
+            <i class="fas fa-plus-circle mr-2"></i>
+            Add Product
+        </a> -->
+        <a class="btn btn-md mr-2 ml-2" id="btn-print" href="{% url 'export_products' %}">
+            <i class="fa fa-file-csv mr-2" aria-hidden="true"></i>
+            Export CSV
+            <!-- {{ object.title }} -->
+        </a>
+    </div>
+</div>
+
+
+<div class="table-container mb-2">
+    <table class="datatable table table-hover" cellspacing="0" width="100%" id="backlog">
+        <thead class="table-head">
+            <tr>
+                <th class="th" style="width:15%">Date</th>
+                <th class="th" style="width:15%">Code/Description</th>
+                <th class="th" style="width:15%">User</th>
+                <th class="th" style="width:15%">Change Reason</th>
+            </tr>
+        </thead>
+        <tbody class="table-body" id="backlog-table">
+            {% if object_list %}
+            {% for object in object_list%}
+            <tr>
+                <td style="padding-left: 1rem">{{ object.history_date|date:"d/m/Y G:i" }}</td>
+                <td style="padding-left: 1rem">{{ object.code }}</td>
+                <td style="padding-left: 1rem">{{ object.history_user|capfirst }}</td>
+                {% if object.get_history_type_display == "Created" %}
+                    <td>Item Created</td>
+                {% elif object.get_history_type_display == "Changed" %}
+            
+
+                    {% if object.prev_record.quantity >= object.quantity %}
+                        <td>Removed:  {{ object.prev_record.quantity|diff:object.quantity }}</td>
+                    {% else %}
+                        <td>Added: {{ object.prev_record.quantity|diff:object.quantity }}</td>
+                    {% endif %}
+
+                {% else %}
+                    <td style="padding-left: 1rem">Item Deleted</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="9" class="text-center" style="font-size: large;">No products!</td>
+            </tr>
+            {% endif %}
+        </tbody>
+        <tfoot class="table-footer">
+            <tr> 
+                <th class="th" style="width:15%">Date</th>
+                <th class="th" style="width:15%">Code/Description</th>
+                <th class="th" style="width:15%">User</th>
+                <th class="th" style="width:15%">Change Reason</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/datatables.min.js' %}"></script>
+<script src="{% static 'js/table.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $('.datatable').DataTable();
+    });
+
+    $('#backlog').DataTable({
+        "order": [[0, "desc"]], //or asc 
+        "lengthMenu": [[25, 50, -1], [25, 50, "All"]]
+    });
+</script>
+
+{% endblock %}

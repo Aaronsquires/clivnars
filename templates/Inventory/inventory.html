@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+<!-- Dashboard CSS -->
+<link rel="stylesheet" href="{% static 'css/maincontent.css' %}">
+<link rel="stylesheet" href="{% static 'css/tables.css' %}">
+
+<link rel="stylesheet" href="{% static 'css/datatables.min.css' %}">
+
+{% endblock %}
+
+{% block title %}Clivnars Ltd{% endblock %}
+
+{% block main %}
+
+<!-- Dashboard / Button Toolbar -->
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-3 pb-2" id="dashboard-bar">
+    <h4 class="h4">Inventory</h4>
+    <div class="btn-toolbar mb-2 mb-md-0">
+
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-print mr-2" aria-hidden="true"></i>
+                Print
+            </button>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="{% url 'print_table_lowstock' %}">Print Low Stock Items</a>
+                <a class="dropdown-item" href="{% url 'print_table_inventory' %}">Print All Inventory Items</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="table-container mb-2">
+    <table class="datatable table table-hover" cellspacing="0" width="100%">
+        <thead class="table-head">
+            <tr>
+                <th class="th" style="width:15%">Code</th>
+                <th class="th" style="width:15%">Supplier</th>
+                <th class="th">Description</th>
+                <th class="th" style="width:15%">Current Quantity</th>
+                <!-- <th class="th"style="width:5%">min Quantity</th> -->
+                <th class="th" style="width:15%">Stock Check</th>
+                <th class="th" style="width:5%">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="table-body">
+            {% if object_list %}
+            {% for object in object_list%}
+            <tr {% if object.is_out_of_stock %}style="background-color: #FF6161" {% endif %}>
+
+
+                <td>{% if object.colour.colour == "None" %} {{ object.code }} {% else %} {{ object.code }} -
+                    {{ object.colour }} {% endif %}</td>
+                <td>{{ object.supplier }}</td>
+                <td>{{ object.description }}</td>
+                <td>{{ object.quantity }}</td>
+                <!-- <td>{{ object.minquantity }}</td> -->
+                <td>{% if object.is_out_of_stock %}LOW STOCK{% else %}IN STOCK{% endif %}</td>
+
+                <td>
+                    <a class="btn btn-primary btn-sm" id="edit-btn" href="{% url 'inventory_edit' object.id %}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="9" class="text-center" style="font-size: large;">No products!</td>
+            </tr>
+            {% endif %}
+        </tbody>
+        <tfoot class="table-footer">
+            <tr>
+                <th class="th" style="width:15%">Code</th>
+                <th class="th" style="width:15%">Supplier</th>
+                <th class="th">Description</th>
+                <th class="th" style="width:15%">Current Quantity</th>
+                <!-- <th class="th"style="width:5%">min Quantity</th> -->
+                <th class="th" style="width:15%">Stock Check</th>
+                <th class="th" style="width:5%">Actions</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/datatables.min.js' %}"></script>
+<script src="{% static 'js/table.js' %}"></script>
+<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $('.datatable').DataTable();
+    });
+</script>
+
+
+{% endblock %}

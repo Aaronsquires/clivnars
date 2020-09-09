@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+<!-- Dashboard CSS -->
+<link rel="stylesheet" href="{% static 'css/maincontent.css' %}">
+<link rel="stylesheet" href="{% static 'css/datatables.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/createform.css' %}">
+<link rel="stylesheet" href="{% static 'css/editform.css' %}">
+
+{% endblock %}
+
+{% block title %}Clivnars Ltd - Colours Edit{% endblock %}
+
+{% block main %}
+
+<!-- Dashboard / Button Toolbar -->
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-3 pb-2" id="dashboard-bar">
+    <h4 class="h4">Edit Colour Item - {{object.code}}</h4>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a class="btn" href="{% url 'colours_listview' %}">
+            <i class="fas fa-arrow-left mr-2"></i>
+            Return to Colours
+        </a>
+    </div>
+</div>
+
+<div class="dashboard-container">
+    <form method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type='submit' value='Save' />
+    </form>
+</div>
+
+
+
+
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/datatables.min.js' %}"></script>
+<script src="{% static 'js/table.js' %}"></script>
+{% endblock %}

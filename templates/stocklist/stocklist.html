@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+<!-- Dashboard CSS -->
+<link rel="stylesheet" href="{% static 'css/maincontent.css' %}">
+<link rel="stylesheet" href="{% static 'css/datatables.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/tables.css' %}">
+
+{% endblock %}
+
+{% block title %}Clivnars Ltd - Stocklist{% endblock %}
+
+{% block main %}
+
+
+<!-- Dashboard / Button Toolbar -->
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+</div><!-- /.modal -->
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-3 pb-2" id="dashboard-bar">
+    <h4 class="h4">Stocklist</h4>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a class="btn btn-md mr-2 ml-2" href="{% url 'stocklist_create' %}">
+            <i class="fas fa-plus-circle mr-2"></i>
+            Add Product
+        </a>
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-print mr-2" aria-hidden="true"></i>
+                Print
+            </button>              
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="{% url 'print_table_lowstock' %}">Print Low Stock Items</a>
+                <a class="dropdown-item" href="{% url 'print_table_allstock' %}">Print All Stock Items</a>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="table-container mb-2">
+        <table class="datatable table table-hover" cellspacing="0" width="100%">
+            <thead class="table-head">
+                <tr>
+                    <th class="th" style="width:15%">Code</th>
+                    <th class="th"style="width:15%">Supplier</th>
+                    <th class="th" style="width:30%">Description</th>
+                    <th class="th" style="width:25%">Last Modified</th>
+                    <th class="th">Quantity
+                    </th>
+                    <th class="th" style="width:15%">Min Quantity</th>
+                    <th class="th" style="width:5%">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="table-body">
+                {% for object in object_list%}
+                <tr>
+                    <td>{% if object.colour.colour == "None" %} {{ object.code }} {% else %} {{ object.code }} - {{ object.colour }} {% endif %}</td>
+                    <td>{{ object.supplier }}</td>
+                    <td>{{ object.description }}</td>
+                    <td>{{ object.modified }}</td>
+                    <td>{{ object.history_user }}</td>
+                    <td>{{ object.minquantity }}</td>
+                    <td>
+                        <div class="row">
+                            <a class="btn btn-primary btn-sm" id="edit-btn" href="{% url 'stocklist_edit' object.id %}">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a class="btn btn-danger btn-sm" id="delete-btn" href="{% url 'stocklist_delete' object.id %}">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot class="table-footer">
+                <tr>
+                    <th class="th" style="width:15%">Code</th>
+                    <th class="th"style="width:15%">Supplier</th>
+                    <th class="th" style="width:30%">Description</th>
+                    <th class="th" style="width:25%">Last Modified</th>
+                    <th class="th">Quantity</th>
+                    <th class="th" style="width:15%">Min Quantity</th>
+                    <th class="th" style="width:5%">Actions</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    </div>
+
+{% endblock %}
+
+{% block extrascripts %}
+
+
+{% endblock extrascripts %}

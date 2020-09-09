@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+    <title> Print PDF - {{title}}</title>
+    <style type="text/css">
+        #pdf-title {
+            text-align: center;
+            font-size: 20px;
+        }
+        .header {
+            font-size: 12px;
+        }
+
+        .order-block {
+            background-color: lightgrey;
+            align-content: center;
+        }
+
+        .order-block-text {
+            text-align: center;
+            font-size: 15px;
+            padding-top: 10px;
+        }
+
+        .table-head th {
+            font-size: 12px;
+            padding-bottom: 4px;
+        }
+
+        .table-body th {
+            font-size: 10px;
+            font-weight: 200;
+            padding-bottom: 3.5px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class='wrapper'>
+        <p class='title' id="pdf-title"> {{ title }} </p>
+        <div class="order-block">
+            <p class="order-block-text">
+                Details
+            </p>
+        </div>
+        <div class="spacer"></div>
+        <div class='header'>
+            <p class="user-name">Printed by: {{ user|capfirst }}</p>
+            <p>Inventory Date: {{ currentdate }}</p>
+        </div>
+        <div>
+
+
+            <div class="table-container mb-2">
+                <div class="order-block">
+                    <p class="order-block-text">
+                        {{ reportDetails }}
+                    </p>
+                </div>
+                <div class="spacer"></div>
+
+                <table class="datatable table table-hover" cellspacing="0" width="100%">
+                    {% if pdfID == "inventoryStock" %}
+                    <thead class="table-head">
+                        <tr>
+                            <th class="th" style="width:15%">Code</th>
+                            <th class="th" style="width:15%">Supplier</th>
+                            <th class="th">Description</th>
+                            <th class="th" style="width:15%">Current Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-body">
+                        {% if objects %}
+                        {% for object in objects %}
+                        <tr>
+                            <th class="th">{% if object.colour.colour == "None" %} {{ object.code }} {% else %} {{ object.code }} - {{ object.colour }} {% endif %}</th>
+                            <th class="th"> {{ object.supplier }}</th>
+                            <th class="th"> {{ object.description }}</th>
+                            <th class="th"> {{ object.quantity }}</th>
+
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center" style="font-size: large; text-align: center;">No Products Available</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                {% else %}
+                    <thead class="table-head">
+                        <tr>
+                            <th class="th" style="width:15%">Code</th>
+                            <th class="th" style="width:15%">Supplier</th>
+                            <th class="th">Description</th>
+                            <th class="th" style="width:15%">Current Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-body">
+                        {% if objects %}
+                        {% for object in objects %}
+                        <tr>
+                            <th class="th">{% if object.colour.colour == "None" %} {{ object.code }} {% else %} {{ object.code }} - {{ object.colour }} {% endif %}</th>
+                            <th class="th"> {{ object.supplier }}</th>
+                            <th class="th"> {{ object.description }}</th>
+                            <th class="th"> {{ object.quantity }}</th>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center" style="font-size: large; text-align: center;">No Products Available</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                    {% endif %}
+                </table>
+               
+            </div>
+        </div>
+        
+</body>
+
+</html>
