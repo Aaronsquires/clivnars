@@ -28,14 +28,18 @@ class Product(models.Model):
     description = models.TextField(blank=True, null=True)
     colour = models.ForeignKey(Colours, on_delete=models.SET_NULL, null=True, blank=True)
     supplier = models.ForeignKey(Supplier, on_delete=models.SET_NULL, null=True)
-    quantity = models.IntegerField(default='1')
+    quantity = models.FloatField(default='1.0')
     minquantity = models.IntegerField(default='50')
     modified = models.DateTimeField(auto_now=True)
     modifiedby = models.CharField(max_length=20)
     history = HistoricalRecords()
 
     def is_out_of_stock(self):
+        return self.quantity == 0.0
+
+    def is_low_stock(self):
         return self.quantity <= self.minquantity
+    
 
     def no_stock(self):
         return self.quantity == '0'
