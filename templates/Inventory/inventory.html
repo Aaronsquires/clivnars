@@ -36,7 +36,7 @@
 
 
 <div class="table-container mb-2">
-    <table class="datatable table table-hover" cellspacing="0" width="100%">
+    <table class="datatable table table-hover" cellspacing="0" width="100%" id="inventory">
         <thead class="table-head">
             <tr>
                 <th class="th" style="width:15%">Code</th>
@@ -98,6 +98,11 @@
 <script>
     $(document).ready(function () {
         $('.datatable').DataTable();
+    });
+
+    $('#inventory').DataTable({
+        "order": [[0, "desc"]], //or asc 
+        "lengthMenu": [[25, 50, -1], [25, 50, "All"]]
     });
 </script>
 
